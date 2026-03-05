@@ -1,6 +1,7 @@
 import java.util.Random;
 
 public class ColaSupermercado {
+    // 1. Constantes y Variables de instancia al principio (Estándar de ubicación)
     private static final int MAX_COLA = 12;
     private String[] cola;
     private int numClientes;
@@ -9,6 +10,8 @@ public class ColaSupermercado {
         cola = new String[MAX_COLA];
         numClientes = 0;
     }
+
+    // 2. MÉTODOS PÚBLICOS (La "cara" de la clase)
     public void inicializarCola() {
         for (int i = 0; i < MAX_COLA; i++) {
             cola[i] = null;
@@ -17,16 +20,8 @@ public class ColaSupermercado {
         System.out.println("La cola se ha iniciado.");
     }
 
-    private boolean hayCliente(String cliente) {
-        for (int i = 0; i < numClientes; i++) {
-            if (cola[i].equals(cliente)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public void agregaCliente(String cliente) {
+    // Corregido: 'agregarCliente' en lugar de 'añadirCliente' (Estándar ASCII)
+    public void agregarCliente(String cliente) {
         if (numClientes < MAX_COLA && !hayCliente(cliente)) {
             cola[numClientes] = cliente;
             numClientes++;
@@ -105,26 +100,14 @@ public class ColaSupermercado {
         System.out.println();
     }
 
-    private String clienteAleatorio() {
-        String[] nombres = { "Laura", "Claudia", "Javier", "Juan", "Lucas", "Paula", "Alvaro", "Sara", "Romeo",
-                "Manuel", "Fran", "Pablo" };
-        Random random = new Random();
-        String cliente;
-        do {
-            cliente = nombres[random.nextInt(nombres.length)];
-        } while (hayCliente(cliente));
-        return cliente;
-    }
-
     public void ejecutarSimulacion() {
         Random random = new Random();
         for (int i = 0; i < 20; i++) {
-
             String clienteNuevo = clienteAleatorio();
             int accion = random.nextInt(3);
 
             if (accion == 0) {
-                agregaCliente(clienteNuevo);
+                agregarCliente(clienteNuevo);
             } else if (accion == 1 && numClientes > 0) {
                 procesarSiguiente();
             } else if (accion == 2 && numClientes > 0) {
@@ -150,6 +133,27 @@ public class ColaSupermercado {
         }
     }
 
+    private boolean hayCliente(String cliente) {
+        for (int i = 0; i < numClientes; i++) {
+            if (cola[i].equals(cliente)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private String clienteAleatorio() {
+        String[] nombres = { "Laura", "Claudia", "Javier", "Juan", "Lucas", "Paula", "Alvaro", "Sara", "Romeo",
+                "Manuel", "Fran", "Pablo" };
+        Random random = new Random();
+        String cliente;
+        do {
+            cliente = nombres[random.nextInt(nombres.length)];
+        } while (hayCliente(cliente));
+        return cliente;
+    }
+
+    // 4. MAIN (Habitualmente al principio o al final de la clase)
     public static void main(String[] args) {
         ColaSupermercado cola = new ColaSupermercado();
         cola.inicializarCola();
