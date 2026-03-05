@@ -26,17 +26,6 @@ public class List {
         this.size++;
     }
 
-    public void insertFront(String value) {
-        Node n = new Node(value);
-        if (this.first == null)
-            this.first = n;
-        else {
-            n.setNext(this.first);
-            this.first = n;
-        }
-        this.size++;
-    }
-
     public void deleteEnd() {
         if (this.first != null) {
             if (this.first.getNext() == null) {
@@ -54,42 +43,6 @@ public class List {
         }
     }
 
-    public void deleteFront() {
-        if (this.first != null) {
-            this.first = this.first.getNext();
-            this.size--;
-        }
-    }
-
-    public Node[] find(String value) {
-        Node iterator = this.first;
-        int matchCount = 0;
-        while (iterator != null) {
-            if (iterator.getValue().equals(value)) {
-                matchCount++;
-            }
-            iterator = iterator.getNext();
-        }
-
-        if (matchCount == 0) {
-            return null;
-        }
-
-        Node[] result = new Node[matchCount];
-        iterator = this.first;
-        int index = 0;
-
-        while (iterator != null) {
-            if (iterator.getValue().equals(value)) {
-                result[index] = iterator;
-                index++;
-            }
-            iterator = iterator.getNext();
-        }
-
-        return result;
-    }
-
     public String[] listAll() {
         String[] list = new String[this.size];
         Node iterator = this.first;
@@ -101,9 +54,5 @@ public class List {
         }
         return list;
     }
-
-    public void clearList() {
-        this.first = null;
-        this.size = 0;
-    }
+    
 }
