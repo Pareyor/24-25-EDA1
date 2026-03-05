@@ -1,6 +1,7 @@
 import java.util.Random;
 
 public class ColaSupermercado {
+    // 1. Constantes y Variables de instancia al principio (Estándar de ubicación)
     private static final int MAX_COLA = 12;
     private String[] cola;
     private int numClientes;
@@ -10,6 +11,7 @@ public class ColaSupermercado {
         numClientes = 0;
     }
 
+    // 2. MÉTODOS PÚBLICOS (La "cara" de la clase)
     public void inicializarCola() {
         for (int i = 0; i < MAX_COLA; i++) {
             cola[i] = null;
@@ -18,16 +20,8 @@ public class ColaSupermercado {
         System.out.println("La cola se ha iniciado.");
     }
 
-    private boolean hayCliente(String cliente) {
-        for (int i = 0; i < numClientes; i++) {
-            if (cola[i].equals(cliente)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public void añadirCliente(String cliente) {
+    // Corregido: 'agregarCliente' en lugar de 'añadirCliente' (Estándar ASCII)
+    public void agregarCliente(String cliente) {
         if (numClientes < MAX_COLA && !hayCliente(cliente)) {
             cola[numClientes] = cliente;
             numClientes++;
@@ -106,6 +100,48 @@ public class ColaSupermercado {
         System.out.println();
     }
 
+    public void ejecutarSimulacion() {
+        Random random = new Random();
+        for (int i = 0; i < 20; i++) {
+            String clienteNuevo = clienteAleatorio();
+            int accion = random.nextInt(3);
+
+            if (accion == 0) {
+                agregarCliente(clienteNuevo);
+            } else if (accion == 1 && numClientes > 0) {
+                procesarSiguiente();
+            } else if (accion == 2 && numClientes > 0) {
+                String clienteQueAbandona = cola[random.nextInt(numClientes)];
+                abandonarCola(clienteQueAbandona);
+            }
+
+            if (numClientes > 0 && random.nextBoolean()) {
+                entregarProductos(cola[random.nextInt(numClientes)]);
+            }
+            
+            if (numClientes > 1 && random.nextBoolean()) {
+                adelantarCliente(clienteNuevo);
+            }
+            
+            if (numClientes > 1 && random.nextBoolean()) {
+                int posicion = random.nextInt(numClientes) + 1;
+                colarseEnCola(clienteNuevo, posicion);
+            }
+
+            advertirColaLlena();
+            mostrarCola();
+        }
+    }
+
+    private boolean hayCliente(String cliente) {
+        for (int i = 0; i < numClientes; i++) {
+            if (cola[i].equals(cliente)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     private String clienteAleatorio() {
         String[] nombres = { "Laura", "Claudia", "Javier", "Juan", "Lucas", "Paula", "Alvaro", "Sara", "Romeo",
                 "Manuel", "Fran", "Pablo" };
@@ -117,40 +153,10 @@ public class ColaSupermercado {
         return cliente;
     }
 
-    public void ejecutarSimulacion() {
-        Random random = new Random();
-        for (int i = 0; i < 20; i++) {
-
-            String cliente = clienteAleatorio();
-            int accion = random.nextInt(3);
-
-            if (accion == 0) {
-                añadirCliente(cliente);
-            } else if (accion == 1 && numClientes > 0) {
-                procesarSiguiente();
-            } else if (accion == 2 && numClientes > 0) {
-                abandonarCola(cliente);
-            }
-            if (numClientes > 0 && random.nextBoolean()) {
-                entregarProductos(cola[random.nextInt(numClientes)]);
-            }
-            if (numClientes > 1 && random.nextBoolean()) {
-                adelantarCliente(cliente);
-            }
-            if (numClientes > 1 && random.nextBoolean()) {
-                int posicion = random.nextInt(numClientes) + 1;
-                colarseEnCola(cliente, posicion);
-            }
-
-            advertirColaLlena();
-            mostrarCola();
-        }
-    }
-
+    // 4. MAIN (Habitualmente al principio o al final de la clase)
     public static void main(String[] args) {
         ColaSupermercado cola = new ColaSupermercado();
         cola.inicializarCola();
         cola.ejecutarSimulacion();
     }
-
 }
