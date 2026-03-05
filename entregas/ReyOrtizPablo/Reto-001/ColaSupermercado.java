@@ -9,7 +9,6 @@ public class ColaSupermercado {
         cola = new String[MAX_COLA];
         numClientes = 0;
     }
-
     public void inicializarCola() {
         for (int i = 0; i < MAX_COLA; i++) {
             cola[i] = null;
@@ -121,25 +120,29 @@ public class ColaSupermercado {
         Random random = new Random();
         for (int i = 0; i < 20; i++) {
 
-            String cliente = clienteAleatorio();
+            String clienteNuevo = clienteAleatorio();
             int accion = random.nextInt(3);
 
             if (accion == 0) {
-                añadirCliente(cliente);
+                añadirCliente(clienteNuevo);
             } else if (accion == 1 && numClientes > 0) {
                 procesarSiguiente();
             } else if (accion == 2 && numClientes > 0) {
-                abandonarCola(cliente);
+                String clienteQueAbandona = cola[random.nextInt(numClientes)];
+                abandonarCola(clienteQueAbandona);
             }
+
             if (numClientes > 0 && random.nextBoolean()) {
                 entregarProductos(cola[random.nextInt(numClientes)]);
             }
+            
             if (numClientes > 1 && random.nextBoolean()) {
-                adelantarCliente(cliente);
+                adelantarCliente(clienteNuevo);
             }
+            
             if (numClientes > 1 && random.nextBoolean()) {
                 int posicion = random.nextInt(numClientes) + 1;
-                colarseEnCola(cliente, posicion);
+                colarseEnCola(clienteNuevo, posicion);
             }
 
             advertirColaLlena();
@@ -152,5 +155,4 @@ public class ColaSupermercado {
         cola.inicializarCola();
         cola.ejecutarSimulacion();
     }
-
 }
