@@ -26,7 +26,7 @@ public class ColaSupermercado {
         return false;
     }
 
-    public void añadirCliente(String cliente) {
+    public void agregaCliente(String cliente) {
         if (numClientes < MAX_COLA && !hayCliente(cliente)) {
             cola[numClientes] = cliente;
             numClientes++;
@@ -124,7 +124,7 @@ public class ColaSupermercado {
             int accion = random.nextInt(3);
 
             if (accion == 0) {
-                añadirCliente(clienteNuevo);
+                agregaCliente(clienteNuevo);
             } else if (accion == 1 && numClientes > 0) {
                 procesarSiguiente();
             } else if (accion == 2 && numClientes > 0) {
