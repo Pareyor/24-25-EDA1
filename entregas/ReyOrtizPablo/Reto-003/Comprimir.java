@@ -1,3 +1,5 @@
+import java.util.Arrays;
+
 public class Comprimir {
 
     static class Par {
@@ -9,6 +11,7 @@ public class Comprimir {
             this.letra = c;
         }
 
+        @Override
         public String toString() {
             return "(" + numero + "," + letra + ")";
         }
@@ -18,10 +21,10 @@ public class Comprimir {
         String[] diccionario = new String[1];
         int[] valores = new int[1];
         Par[] salida = new Par[1];
+        
         int valor = 1;
         int contadorSalida = 0;
         int contadorDiccionario = 0;
-
         String w = "";
 
         System.out.println("Diccionario inicial: ");
@@ -34,29 +37,29 @@ public class Comprimir {
 
             if (indice == -1) {
                 int p = w.isEmpty() ? 0 : buscarEnDiccionario(diccionario, contadorDiccionario, w);
-                salida = expandirArraySalida(salida, contadorSalida);
+                
+                if (contadorSalida >= salida.length) {
+                    salida = Arrays.copyOf(salida, salida.length * 2);
+                }
                 salida[contadorSalida++] = new Par(p, c);
 
-                diccionario = expandirArrayDiccionario(diccionario, contadorDiccionario);
-                valores = expandirArrayValores(valores, contadorDiccionario);
+                if (contadorDiccionario >= diccionario.length) {
+                    diccionario = Arrays.copyOf(diccionario, diccionario.length * 2);
+                    valores = Arrays.copyOf(valores, valores.length * 2);
+                }
+                
                 diccionario[contadorDiccionario] = wc;
                 valores[contadorDiccionario] = valor;
+                
                 System.out.println("Agregado al diccionario: " + wc + " -> " + valor);
                 valor++;
                 contadorDiccionario++;
-
                 w = "";
             } else {
                 w = wc;
             }
         }
-
-        Par[] salidaFinal = new Par[contadorSalida];
-        for (int i = 0; i < contadorSalida; i++) {
-            salidaFinal[i] = salida[i];
-        }
-
-        return salidaFinal;
+        return Arrays.copyOf(salida, contadorSalida);
     }
 
     public static int buscarEnDiccionario(String[] diccionario, int contador, String secuencia) {
@@ -68,47 +71,16 @@ public class Comprimir {
         return -1;
     }
 
-    public static String[] expandirArrayDiccionario(String[] diccionario, int contador) {
-        if (contador >= diccionario.length) {
-            String[] nuevoDiccionario = new String[diccionario.length * 2];
-            for (int i = 0; i < diccionario.length; i++) {
-                nuevoDiccionario[i] = diccionario[i];
-            }
-            return nuevoDiccionario;
-        }
-        return diccionario;
-    }
-
-    public static int[] expandirArrayValores(int[] valores, int contador) {
-        if (contador >= valores.length) {
-            int[] nuevoValores = new int[valores.length * 2];
-            for (int i = 0; i < valores.length; i++) {
-                nuevoValores[i] = valores[i];
-            }
-            return nuevoValores;
-        }
-        return valores;
-    }
-
-    public static Par[] expandirArraySalida(Par[] salida, int contador) {
-        if (contador >= salida.length) {
-            Par[] nuevoSalida = new Par[salida.length * 2];
-            for (int i = 0; i < salida.length; i++) {
-                nuevoSalida[i] = salida[i];
-            }
-            return nuevoSalida;
-        }
-        return salida;
-    }
 
     public static void main(String[] args) {
         String cadena = "abababcbdc"; 
         Par[] resultado = comprimir(cadena);
 
         System.out.println("\nCadena original: " + cadena);
-        System.out.println("Compresión: ");
+        System.out.println("Compresión resultante: ");
         for (Par p : resultado) {
             System.out.print(p + " ");
         }
+        System.out.println();
     }
 }
